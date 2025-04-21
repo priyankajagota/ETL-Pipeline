@@ -11,8 +11,6 @@ pipeline{
 			    checkout([$class: 'GitSCM', branches: [[name: '**']],
                  extensions: [], userRemoteConfigs:
                   [[url: 'https://github.com/priyankajagota/ETL-Pipeline.git']]])
-
-                   bat "docker run 12120211/etl-repo:${env.BUILD_NUMBER}"
 			}
 		}
 
@@ -20,15 +18,18 @@ pipeline{
 
 		  steps {
                 script {
-                    dockerImage = docker.build("your-org/your-app:${env.BUILD_NUMBER}")
+                    dockerImage = docker.build("12120211/etl-repo:${env.BUILD_NUMBER}")
                 }
             }
 		}
 		
+		 stage('Run') {
+
+			steps {
+			   bat "docker run 12120211/etl-repo:${env.BUILD_NUMBER}"
+			}
+		}
 		
-
-	
-
 		stage('Push') {
 
 		steps {
@@ -43,4 +44,3 @@ pipeline{
 }
 
 }
-
